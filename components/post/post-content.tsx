@@ -9,8 +9,8 @@ interface PostContentProps {
 const PostContent = async ({post}: PostContentProps) => {
   
   return (
-    <div>
-      <div className="text-sm flex gap-2 items-center text-neutral-400">
+    <div className="space-y-2">
+      <div className="flex items-center gap-2 text-xs @md:text-sm text-neutral-400">
         <div className={`font-medium ${
           post.category.title === "Cities"
           ? "text-emerald-600"
