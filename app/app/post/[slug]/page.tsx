@@ -1,4 +1,6 @@
 import { DUMMY_POSTS } from '@/DUMMY_DATA'
+import { readItems } from '@directus/sdk';
+import directus from "@/lib/directus";
 import CTACard from '@/components/elements/cta-card';
 import SocialLink from '@/components/elements/social-link';
 import PaddingContainer from '@/components/layout/padding-container';
@@ -8,21 +10,71 @@ import { notFound } from 'next/navigation';
 import React from 'react';
 
 export const generateStaticParams = async () => {
-    return DUMMY_POSTS.map((post) => {
+    /* return DUMMY_POSTS.map((post) => {
         return {
             slug: post.slug
         }
-    });
+    }); */
+    console.log("here");
+    try {
+        const posts = await directus.request(readItems("post", {
+            filter: {
+                status: {
+                    _eq: "published",
+                },
+            },
+            fields: ["slug"],
+        }));
+
+
+        const params = posts?.map((post) => {
+            return {
+                slug: post.slug as string,
+            };
+        });
+
+        return params || [];
+
+    } catch (error) {
+        console.log(error);
+        throw new Error("Error fetching posts slug");
+    }
+
 }
 
-const Page = ({ params }: {
-    params: {
-        slug: string
+export default async function Page ({ params }: { params: { slug: string } }) {
+
+
+    /* const post = DUMMY_POSTS.find((post) => post.slug === params.slug); */
+
+    const getPostData = async () => {
+        try {
+            const post = await directus.request(readItems("post", {
+                filter: {
+                    slug: {
+                        _eq: params.slug,
+                    },
+                },
+                fields: [
+                    "*",
+                    "category.id",
+                    "category.title",
+                    "auhtor.id",
+                    "author.first_name",
+                    "author.last_name",
+                ],
+            }));
+
+
+            return post?.[0] || [];
+
+        } catch (error) {
+            console.log(error);
+            throw new Error("Error fetching posts");
+        }
     }
-}) => {
 
-
-    const post = DUMMY_POSTS.find((post) => post.slug === params.slug);
+    const post = await getPostData()
 
     if (!post) {
         notFound()
@@ -55,10 +107,10 @@ const Page = ({ params }: {
                     </div>
                     <PostBody body={post.body} />
                 </div>
-                <CTACard/>
+                <CTACard />
             </div>
         </PaddingContainer>
     )
 }
 
-export default Page
+//export default Page

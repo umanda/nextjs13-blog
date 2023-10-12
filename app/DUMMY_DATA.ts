@@ -3,7 +3,7 @@ import { Category, Post } from "./types/collection";
 export const DUMMY_POSTS: Post[] = [
   {
     id: "1",
-    title: "A lovely green city: New York",
+    title: "Write a blog post for me: A lovely green city: New York",
     description:
       "New York is a city in the United States of America. It is the most populous city in the United States.",
     category: { id: "1", title: "Cities" },
@@ -17,7 +17,7 @@ export const DUMMY_POSTS: Post[] = [
   },
   {
     id: "2",
-    title: "The vibrant city of Paris",
+    title: "Write a blog post for me: The vibrant city of Paris",
     description:
       "Paris is the capital and most populous city of France. It is located on the Seine River, in the north of the country, at the heart of the Île-de-France region.",
     category: { id: "1", title: "Cities" },
@@ -31,7 +31,7 @@ export const DUMMY_POSTS: Post[] = [
   },
   {
     id: "3",
-    title: "The majestic city of London",
+    title: "Write a blog post for me: The majestic city of London",
     description:
       "London is the capital and largest city of England and the United Kingdom. It is located on the River Thames in the south-east of England.",
     category: { id: "1", title: "Cities" },
@@ -45,7 +45,7 @@ export const DUMMY_POSTS: Post[] = [
   },
   {
     id: "4",
-    title: "The great adventure of the Amazon",
+    title: "Write a blog post for me: The great adventure of the Amazon",
     description:
       "The Amazon is the largest river in the world. It is located in South America and flows through Brazil, Peru, Colombia and etc.",
     category: { id: "2", title: "Experiences" },
@@ -59,7 +59,7 @@ export const DUMMY_POSTS: Post[] = [
   },
   {
     id: "5",
-    title: "Journey to the infinite sky: Cappadocia",
+    title: "Write a blog post for me: Journey to the infinite sky: Cappadocia",
     description:
       "Cappadocia is a region in central Turkey. It is known for its unique geological features, such as the fairy chimneys, which are cone-shaped rock formations.",
     category: { id: "2", title: "Experiences" },
@@ -73,7 +73,7 @@ export const DUMMY_POSTS: Post[] = [
   },
   {
     id: "6",
-    title: "Joining the elephants in the wild: Thailand",
+    title: "Write a blog post for me: Joining the elephants in the wild: Thailand",
     description:
       "Thailand is a country in Southeast Asia. It is known for its tropical beaches, opulent royal palaces, ancient ruins, and ornate temples displaying figures of Buddha.",
     category: { id: "2", title: "Experiences" },

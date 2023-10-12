@@ -19,7 +19,9 @@ const PostCard = ({ post, layout = 'horizontal', reverse = false }: PostProps) =
       <Image
         className={`rounded-md w-full object-cover object-center max-h-[300px] 
         ${reverse ? 'md:order-last' : ""}`}
-        src={post.image} alt={post.title} width={600} height={300} />
+        src={`${process.env.NEXT_PUBLIC_ASSETS_URL}${post.image}?key=optimised`} 
+        alt={post.title} width={600} height={300} 
+        />
       <PostContent post={post} />
     </Link>
   );

@@ -7,11 +7,19 @@ const nextConfig = {
             protocol: "https",
           },
           {
-            hostname: "directus-production-8653.up.railway.app",
-            protocol: "https",
+            hostname: "localhost",
+            protocol: "http",
+          },
+          {
+            hostname: "0.0.0.0",
+            protocol: "http",
           },
         ],
       },
+      experimental: {
+        serverActions: true,
+      },
 }
+
 
 module.exports = nextConfig

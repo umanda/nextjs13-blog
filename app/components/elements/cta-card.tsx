@@ -1,7 +1,36 @@
-"use client";
+
+import directus from "@/lib/directus";
+import { createItem } from "@directus/sdk";
+import { revalidateTag } from "next/cache";
 import Image from "next/image";
 
-const CTACard = () => {
+const CTACard = async () => {
+  // Server Actions Approach
+  const formAction = async (formData: FormData) => {
+    "use server";
+
+    try {
+      const email = formData.get('email');
+      await directus.request(createItem('subscribers', {
+        email
+      }));
+      revalidateTag('subscribers-count')
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const subscribersCount = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/items/subscribers?meta=total_count&access_token=${process.env.ADMIN_TOKEN}`,
+    {
+      next: {
+        tags: ["subscribers-count"],
+      },
+    }
+  )
+    .then((res) => res.json())
+    .then((res) => res.meta.total_count)
+    .catch((error) => console.log(error));
 
   return (
     <div className="relative px-6 py-10 rounded-md bg-slate-100">
@@ -16,9 +45,13 @@ const CTACard = () => {
       <div className="relative z-20">
         <div className="text-le font-medium">#exploretheworld</div>
         <h3 className="mt-3 text-4xl font-semibold">Explore the world with me!</h3>
-        <p className="max-w-lg mt-2 text-lg">Explore the world with me! I'm travelling around the 🌍. I've visited most of the great cities of 🇺🇸 and currently I'm travelling in 🇪🇺 Join me!</p>
+        <p className="max-w-lg mt-2 text-lg">Explore the world with me! I&aposm travelling around the 🌍. I&aposve visited most of the great cities of 🇺🇸 and currently I&aposm travelling in 🇪🇺 Join me!</p>
 
-        <form className="flex items-center w-full gap-2 mt-6">
+        <form
+          action={formAction}
+          className="flex items-center w-full gap-2 mt-6"
+          key={subscribersCount + "subscribers-count"}
+          >
           <input
             type="email"
             name="email"
@@ -32,7 +65,12 @@ const CTACard = () => {
           </button>
 
         </form>
-
+        {/* Subscribers for Server Actions Approach */}
+        <div className="mt-5 text-neutral-700">
+          Join our <span className="px-2 py-1 text-sm rounded-md bg-neutral-700 text-neutral-100">
+            {subscribersCount}
+          </span> subscribers now!
+        </div>
 
       </div>
 
