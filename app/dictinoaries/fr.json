@@ -1,0 +1,25 @@
+{
+  "navigation": {
+    "links": {
+      "cities": "Villes",
+      "experience": "Expériences"
+    }
+  },
+  "buttons": {
+    "readMore": "Lire la suite"
+  },
+  "ctaCard": {
+    "title": "Explorez le monde avec moi !",
+    "description": "Explorez le monde avec moi ! Je voyage à travers le 🌍. J'ai visité la plupart des grandes villes des 🇺🇸 et actuellement je voyage en 🇪🇺 Rejoignez-moi !",
+    "button": "S'inscrire",
+    "placeholder": "Écrivez votre adresse e-mail.",
+    "subscriberText1": "Rejoignez nos",
+    "subscriberText2": "abonnés maintenant !"
+  },
+  "footer": {
+    "description": "Un blog de voyage minimaliste et charmant qui partage des expériences et des villes du monde entier !",
+    "rightsText": "Tous les droits sont réservés | Droits d'auteur",
+    "creatorText": "Créé avec ❤️ par",
+    "currentlyAtText": "Actuellement à"
+  }
+}
