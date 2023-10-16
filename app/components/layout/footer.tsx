@@ -3,14 +3,17 @@ import PaddingContainer from './padding-container'
 import siteConfig from "@/config/site";
 import Link from 'next/link';
 import SocialLink from '../elements/social-link';
-function Footer() {
+import { getDictionary } from '@/lib/getDictionary';
+const Footer  = async ({locale} : {locale : string}) => {
+
+    const dictionary = await getDictionary(locale);
     return (
         <div className="py-8 mt-10 border-t">
             <PaddingContainer>
                 <div>
                     <h2 className="text-3xl font-bold">{siteConfig.siteName}</h2>
                     <p className="max-w-md mt-2 text-lg text-neutral-700">
-                        {siteConfig.description}
+                    {dictionary.footer.description}
                     </p>
                 </div>
                 <div className="flex flex-wrap justify-between gap-4 mt-6">
@@ -32,7 +35,7 @@ function Footer() {
                     </div>
                     <div>
                         <div className="text-sm text-neutral-400">
-                            {siteConfig.currentlyAt}
+                            {dictionary.footer.currentlyAtText}
                         </div>
                         <div className="flex items-center gap-2 px-3 py-2 bg-white rounded-md shadow-md">
                             <div className="w-2 h-2 rounded-full bg-emerald-400" />
@@ -42,10 +45,10 @@ function Footer() {
                 </div>
                 <div className="flex flex-wrap items-center justify-between gap-4 py-3 mt-16 border-t">
           <div className="text-sm text-neutral-400">
-            {siteConfig.rightsText} {new Date().getFullYear()}
+            {dictionary.footer.rightsText} {new Date().getFullYear()}
           </div>
           <div className="text-sm">
-            {siteConfig.creatorText}{" "}
+          {dictionary.footer.creatorText}{" "}
             <Link   
               className="underline underline-offset-4"
               href="https://twitter.com/umandajayo"

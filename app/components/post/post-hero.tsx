@@ -4,11 +4,12 @@ import PostContent from "./post-content";
 
 interface PostHeroProps {
   post: Post;
+  locale : string
 }
-const PostHero = ({ post }: PostHeroProps) => {
+const PostHero = ({ post, locale }: PostHeroProps) => {
   return (
     <div>
-      <PostContent isPostPage post={post} />
+      <PostContent locale={locale} isPostPage post={post} />
       <Image
         priority
         className="rounded-md object-cover object-center h-[300px] md:h-[500px] mt-6"

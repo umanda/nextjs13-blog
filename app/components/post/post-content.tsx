@@ -1,13 +1,17 @@
 
+import { getDictionary } from "@/lib/getDictionary";
 import { getReadingTime, getRelativeDate } from "@/lib/helpers";
 import { Post } from "@/types/collection";
 import { ArrowRight } from "lucide-react";
 
 interface PostContentProps {
   post: Post;
-  isPostPage?: boolean
+  isPostPage?: boolean,
+  locale : string
 }
-const PostContent = async ({ post, isPostPage = false }: PostContentProps) => {
+const PostContent = async ({ post, isPostPage = false, locale }: PostContentProps) => {
+
+  let dictionary = await getDictionary(locale);
 
   return (
     <div className="space-y-2">
@@ -22,9 +26,9 @@ const PostContent = async ({ post, isPostPage = false }: PostContentProps) => {
         <div className="w-2 h-2 rounded-full bg-neutral-200"></div>
         <div>{`${post.author.first_name} ${post.author.last_name}`}</div>
         <div className="w-2 h-2 rounded-full bg-neutral-200"></div>
-        <div>{getReadingTime(post.body)}</div>
+        <div>{getReadingTime(post.body,locale)}</div>
         <div className="w-2 h-2 rounded-full bg-neutral-200"></div>
-        <div>{getRelativeDate(post.date_created)}</div>
+        <div>{getRelativeDate(post.date_created,locale)}</div>
       </div>
       <h2
         className={`${isPostPage
@@ -37,7 +41,7 @@ const PostContent = async ({ post, isPostPage = false }: PostContentProps) => {
       <p className="text-base @lg:text-lg leading-snug text-neutral-600">{post.description}</p>
 
       {!isPostPage && (
-        <div className="flex items-center gap-2 pt-2">Read more <ArrowRight size='12' /></div>
+        <div className="flex items-center gap-2 pt-2">{dictionary.buttons.readMore} <ArrowRight size='12' /></div>
       )}
 
     </div>

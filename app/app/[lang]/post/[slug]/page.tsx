@@ -15,7 +15,6 @@ export const generateStaticParams = async () => {
             slug: post.slug
         }
     }); */
-    console.log("here");
     try {
         const posts = await directus.request(readItems("post", {
             filter: {
@@ -42,10 +41,12 @@ export const generateStaticParams = async () => {
 
 }
 
-export default async function Page ({ params }: { params: { slug: string } }) {
+export default async function Page ({ params }: { params: { slug: string, lang : string } }) {
 
 
     /* const post = DUMMY_POSTS.find((post) => post.slug === params.slug); */
+
+    let locale = params.lang;
 
     const getPostData = async () => {
         try {
@@ -83,7 +84,7 @@ export default async function Page ({ params }: { params: { slug: string } }) {
     return (
         <PaddingContainer>
             <div className='space-y-10'>
-                <PostHero post={post} />
+                <PostHero locale={locale} post={post} />
                 <div className='flex flex-col md:flex-row gap-10'>
                     <div className='relative'>
                         <div className='sticky flex items-center gap-5 md:flex-col top-20'>
@@ -108,7 +109,7 @@ export default async function Page ({ params }: { params: { slug: string } }) {
                     <PostBody body={post.body} />
                 </div>
                 {/* ---@ts-expect-error Async Server Component */}
-                <CTACard />
+                <CTACard locale={locale} />
             </div>
         </PaddingContainer>
     )

@@ -8,14 +8,7 @@ import { Post } from '@/types/collection';
 import { notFound } from 'next/navigation';
 
 export const generateStactParams = async () => {
-    console.log("here");
-
-    /* return DUMMY_CATEGORIES.map((category) => {
-        return {
-            category: category.slug
-        }
-    }); */
-
+    
     try {
         const categories = await directus.request(readItems("category", {
             filter: {
@@ -41,7 +34,7 @@ export const generateStactParams = async () => {
 
 }
 
-export default async function Page ({ params }: { params: { category: string } }) {
+export default async function Page ({ params }: { params: { category: string , lang : string} }) {
 
     /* const category = DUMMY_CATEGORIES.find(
         (category) => category.slug === params.category
@@ -51,7 +44,11 @@ export default async function Page ({ params }: { params: { category: string } }
         (post) => post.category.title.toLocaleLowerCase() === params.category
     ); */
 
+    let locale = params.lang;
+
+
     const getCategoryData = async () => {
+
         try {
             const category = await directus.request(readItems('category', {
                 filter: {
@@ -100,7 +97,7 @@ export default async function Page ({ params }: { params: { category: string } }
                     {typeCorrectedCategory?.description}
                 </p>
             </div>
-            <PostList posts={typeCorrectedCategory.posts} />
+            <PostList locale={locale} posts={typeCorrectedCategory.posts} />
         </PaddingContainer>
     )
 }

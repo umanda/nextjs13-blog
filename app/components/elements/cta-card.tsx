@@ -1,10 +1,13 @@
 
 import directus from "@/lib/directus";
+import { getDictionary } from "@/lib/getDictionary";
 import { createItem } from "@directus/sdk";
 import { revalidateTag } from "next/cache";
 import Image from "next/image";
 
-const CTACard = async () => {
+const CTACard = async ({ locale }: { locale: string }) => {
+
+  const dictionary = await getDictionary(locale);
   // Server Actions Approach
   const formAction = async (formData: FormData) => {
     "use server";
@@ -44,32 +47,32 @@ const CTACard = async () => {
 
       <div className="relative z-20">
         <div className="text-le font-medium">#exploretheworld</div>
-        <h3 className="mt-3 text-4xl font-semibold">Explore the world with me!</h3>
-        <p className="max-w-lg mt-2 text-lg">Explore the world with me! I&aposm travelling around the 🌍. I&aposve visited most of the great cities of 🇺🇸 and currently I&aposm travelling in 🇪🇺 Join me!</p>
+        <h3 className="mt-3 text-4xl font-semibold">{dictionary.ctaCard.title}</h3>
+        <p className="max-w-lg mt-2 text-lg">{dictionary.ctaCard.description}</p>
 
         <form
           action={formAction}
           className="flex items-center w-full gap-2 mt-6"
           key={subscribersCount + "subscribers-count"}
-          >
+        >
           <input
             type="email"
             name="email"
-            placeholder="Write your email"
+            placeholder={dictionary.ctaCard.placeholder}
             className="w-full px-3 py-2 text-base rounded-md outline-none md:w-auto placeholder:text-sm bg-white/80 focus:ring-2 ring-neutral-600" />
           <button
             type="submit"
             className="px-3 py-2 rounded-md whitespace-nowrap bg-neutral-900 text-neutral-200"
           >
-            Sign Up
+            {dictionary.ctaCard.button}
           </button>
 
         </form>
         {/* Subscribers for Server Actions Approach */}
         <div className="mt-5 text-neutral-700">
-          Join our <span className="px-2 py-1 text-sm rounded-md bg-neutral-700 text-neutral-100">
+          {dictionary.ctaCard.subscriberText1} <span className="px-2 py-1 text-sm rounded-md bg-neutral-700 text-neutral-100">
             {subscribersCount}
-          </span> subscribers now!
+          </span> {dictionary.ctaCard.subscriberText2}
         </div>
 
       </div>
