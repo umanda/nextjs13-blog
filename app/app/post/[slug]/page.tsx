@@ -107,6 +107,7 @@ export default async function Page ({ params }: { params: { slug: string } }) {
                     </div>
                     <PostBody body={post.body} />
                 </div>
+                {/* ---@ts-expect-error Async Server Component */}
                 <CTACard />
             </div>
         </PaddingContainer>

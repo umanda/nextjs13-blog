@@ -44,6 +44,7 @@ export default async function Home() {
           posts={posts.filter((post, index) => index > 0 && index < 3)}
           layout='vertical' />
 
+        {/* ---@ts-expect-error Async Server Component */}
         <CTACard />
 
         <PostCard reverse post={posts[3]} />
