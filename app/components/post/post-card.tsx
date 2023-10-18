@@ -17,7 +17,7 @@ const PostCard = ({ post, layout = 'horizontal', reverse = false, locale }: Post
 
 
   return (
-    <Link
+    <Link key={post.id}
       className={`@container ${layout === 'horizontal'
         ? "grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
         : "space-y-10"}`}

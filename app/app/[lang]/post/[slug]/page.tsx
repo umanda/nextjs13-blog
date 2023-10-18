@@ -1,4 +1,3 @@
-import { DUMMY_POSTS } from '@/DUMMY_DATA'
 import { readItems } from '@directus/sdk';
 import directus from "@/lib/directus";
 import CTACard from '@/components/elements/cta-card';
@@ -41,8 +40,7 @@ export const generateStaticParams = async () => {
 
 }
 
-export default async function Page ({ params }: { params: { slug: string, lang : string } }) {
-
+const Page = async ({params,}: {params: {slug: string;lang: string;};}) => {
 
     /* const post = DUMMY_POSTS.find((post) => post.slug === params.slug); */
 
@@ -115,4 +113,4 @@ export default async function Page ({ params }: { params: { slug: string, lang :
     )
 }
 
-//export default Page
+export default Page;

@@ -6,12 +6,12 @@ import { ArrowRight } from "lucide-react";
 
 interface PostContentProps {
   post: Post;
-  isPostPage?: boolean,
-  locale : string
+  isPostPage?: boolean;
+  locale: string;
 }
 const PostContent = async ({ post, isPostPage = false, locale }: PostContentProps) => {
 
-  let dictionary = await getDictionary(locale);
+  const dictionary = await getDictionary(locale);
 
   return (
     <div className="space-y-2">

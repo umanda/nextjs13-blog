@@ -7,7 +7,7 @@ import PostList from '@/components/post/post-lists';
 import { Post } from '@/types/collection';
 import { notFound } from 'next/navigation';
 
-export const generateStactParams = async () => {
+export async function generateStaticParams() {
     
     try {
         const categories = await directus.request(readItems("category", {

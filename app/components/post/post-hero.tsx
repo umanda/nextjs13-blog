@@ -4,11 +4,12 @@ import PostContent from "./post-content";
 
 interface PostHeroProps {
   post: Post;
-  locale : string
+  locale: string;
 }
 const PostHero = ({ post, locale }: PostHeroProps) => {
   return (
     <div>
+      {/* @ts-expect-error Async Server Component */}
       <PostContent locale={locale} isPostPage post={post} />
       <Image
         priority
