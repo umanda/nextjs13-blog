@@ -25,13 +25,25 @@ export const generateStaticParams = async () => {
         }));
 
 
+
         const params = posts?.map((post) => {
             return {
                 slug: post.slug as string,
+                lang: "en",
             };
         });
 
-        return params || [];
+        const localisedParams = posts?.map((post) => {
+            return {
+                slug: post.slug as string,
+                lang: "fr",
+            };
+        });
+
+        // Concat Localised and Regular Params
+        const allParams = params?.concat(localisedParams ?? []);
+
+        return allParams || [];
 
     } catch (error) {
         console.log(error);
@@ -40,7 +52,7 @@ export const generateStaticParams = async () => {
 
 }
 
-const Page = async ({params,}: {params: {slug: string;lang: string;};}) => {
+const Page = async ({ params, }: { params: { slug: string; lang: string; }; }) => {
 
     /* const post = DUMMY_POSTS.find((post) => post.slug === params.slug); */
 
@@ -61,11 +73,30 @@ const Page = async ({params,}: {params: {slug: string;lang: string;};}) => {
                     "auhtor.id",
                     "author.first_name",
                     "author.last_name",
+                    "translations.*",
+                    "category.translations.*",
                 ],
             }));
 
 
-            return post?.[0] || [];
+            const postData = post?.[0];
+
+            if (locale === "en") {
+                return postData;
+            } else {
+                const localisedPostData = {
+                    ...postData,
+                    title: postData?.translations?.[0]?.title,
+                    description: postData?.translations?.[0]?.description,
+                    body: postData?.translations?.[0]?.body,
+                    category: {
+                        ...postData?.category,
+                        title: postData?.category?.translations?.[0]?.title,
+                    },
+                };
+
+                return localisedPostData;
+            }
 
         } catch (error) {
             console.log(error);

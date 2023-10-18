@@ -21,7 +21,7 @@ const PostCard = ({ post, layout = 'horizontal', reverse = false, locale }: Post
       className={`@container ${layout === 'horizontal'
         ? "grid grid-cols-1 md:grid-cols-2 gap-10 items-center"
         : "space-y-10"}`}
-      href={`${locale}/post/${post.slug}`}>
+      href={`/${locale}/post/${post.slug}`}>
       <Image
         className={`rounded-md w-full object-cover object-center max-h-[300px] 
         ${reverse ? 'md:order-last' : ""}`}
