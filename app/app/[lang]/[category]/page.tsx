@@ -118,28 +118,28 @@ export const generateMetadata = async ({ params: { category, lang }, }: { params
             url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/${category}`,
             siteName: categoryData?.title,
             images: [
-              {
-                url:`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`,
-                width: 1200,
-                height: 628,
-              },
-              {
-                url:`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`, // small image
-                width: 800,
-                height: 600,
-              },
+                {
+                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`,
+                    width: 1200,
+                    height: 628,
+                },
+                {
+                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`, // small image
+                    width: 800,
+                    height: 600,
+                },
             ],
             authors: ['Umanda Jayobandara'],
             locale: lang,
             type: "website",
-          },
-          alternates: {
+        },
+        alternates: {
             canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/${category}}`,
             languages: {
-              'en-US': `${process.env.NEXT_PUBLIC_SITE_URL}/en/${category}`,
-              'fr-FR': `${process.env.NEXT_PUBLIC_SITE_URL}/fr/${category}`,
+                'en-US': `${process.env.NEXT_PUBLIC_SITE_URL}/en/${category}`,
+                'fr-FR': `${process.env.NEXT_PUBLIC_SITE_URL}/fr/${category}`,
             }
-          },
+        },
     }
 }
 
