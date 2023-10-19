@@ -1,5 +1,4 @@
-import React from 'react'
-import { DUMMY_CATEGORIES, DUMMY_POSTS } from '@/DUMMY_DATA';
+import React, { cache } from 'react'
 import { readItems } from '@directus/sdk';
 import directus from "@/lib/directus";
 import PaddingContainer from '@/components/layout/padding-container';
@@ -21,20 +20,20 @@ export async function generateStaticParams() {
 
         const params = categories?.map((category) => {
             return {
-              category: category.slug as string,
-              lang: "en",
+                category: category.slug as string,
+                lang: "en",
             };
-          });
-      
-          const localisedParams = categories?.map((category) => {
-            return {
-              category: category.slug as string,
-              lang: "fr",
-            };
-          });
+        });
 
-          const allParams = params?.concat(localisedParams ?? []);
-          return allParams || [];
+        const localisedParams = categories?.map((category) => {
+            return {
+                category: category.slug as string,
+                lang: "fr",
+            };
+        });
+
+        const allParams = params?.concat(localisedParams ?? []);
+        return allParams || [];
 
     } catch (error) {
         console.log(error);
@@ -43,26 +42,15 @@ export async function generateStaticParams() {
 
 }
 
-export default async function Page({ params }: { params: { category: string, lang: string } }) {
-
-    /* const category = DUMMY_CATEGORIES.find(
-        (category) => category.slug === params.category
-    );
-
-    const posts = DUMMY_POSTS.filter(
-        (post) => post.category.title.toLocaleLowerCase() === params.category
-    ); */
-
-    let locale = params.lang;
-
-
-    const getCategoryData = async () => {
+// Get Category Data
+const getCategoryData = cache(
+    async (categorySlug: string, locale: string) => {
 
         try {
             const category = await directus.request(readItems('category', {
                 filter: {
                     slug: {
-                        _eq: params.category,
+                        _eq: categorySlug,
                     },
                 },
                 fields: [
@@ -108,9 +96,38 @@ export default async function Page({ params }: { params: { category: string, lan
             console.log(error);
             throw new Error("Error fetching category");
         }
-    };
+    }
+);
 
-    const category = await getCategoryData();
+// Generate Metadata Function
+export const generateMetadata = async ({ params: { category, lang }, }: { params: { category: string; lang: string; }; }) => {
+    // Get Data from Directus
+    const categoryData = await getCategoryData(category, lang);
+
+    return {
+        title: categoryData?.title,
+        // If you want to override title and have a specific one for this page
+        /* title: {
+            absolute: categoryData?.title,
+        }, */
+        description: categoryData?.description
+    }
+}
+
+export default async function Page({ params }: { params: { category: string, lang: string } }) {
+
+    /* const category = DUMMY_CATEGORIES.find(
+        (category) => category.slug === params.category
+    );
+
+    const posts = DUMMY_POSTS.filter(
+        (post) => post.category.title.toLocaleLowerCase() === params.category
+    ); */
+
+    let locale = params.lang;
+    const categorySlug = params.category;
+
+    const category = await getCategoryData(categorySlug, locale);
 
     if (!category) {
         notFound();

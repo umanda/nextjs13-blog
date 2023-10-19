@@ -6,7 +6,65 @@ import PaddingContainer from '@/components/layout/padding-container';
 import PostBody from '@/components/post/post-body';
 import PostHero from '@/components/post/post-hero';
 import { notFound } from 'next/navigation';
-import React from 'react';
+import React, { cache } from 'react';
+
+const getPostData = cache(async (postSlug: string, locale: string) => {
+    try {
+        const post = await directus.request(readItems("post", {
+            filter: {
+                slug: {
+                    _eq: postSlug,
+                },
+            },
+            fields: [
+                "*",
+                "category.id",
+                "category.title",
+                "auhtor.id",
+                "author.first_name",
+                "author.last_name",
+                "translations.*",
+                "category.translations.*",
+            ],
+        }));
+
+
+        const postData = post?.[0];
+
+        if (locale === "en") {
+            return postData;
+        } else {
+            const localisedPostData = {
+                ...postData,
+                title: postData?.translations?.[0]?.title,
+                description: postData?.translations?.[0]?.description,
+                body: postData?.translations?.[0]?.body,
+                category: {
+                    ...postData?.category,
+                    title: postData?.category?.translations?.[0]?.title,
+                },
+            };
+
+            return localisedPostData;
+        }
+
+    } catch (error) {
+        console.log(error);
+        throw new Error("Error fetching posts");
+    }
+})
+
+// Generate Metadata Function
+export const generateMetadata = async ({ params: { slug, lang }, }: { params: { slug: string; lang: string; }; }) => {
+    // Get Post Data from Directus
+    const post = await getPostData(slug, lang);
+
+    return {
+        title: post?.title,
+        description: post?.description,
+    };
+};
+
 
 export const generateStaticParams = async () => {
     /* return DUMMY_POSTS.map((post) => {
@@ -57,54 +115,10 @@ const Page = async ({ params, }: { params: { slug: string; lang: string; }; }) =
     /* const post = DUMMY_POSTS.find((post) => post.slug === params.slug); */
 
     let locale = params.lang;
-
-    const getPostData = async () => {
-        try {
-            const post = await directus.request(readItems("post", {
-                filter: {
-                    slug: {
-                        _eq: params.slug,
-                    },
-                },
-                fields: [
-                    "*",
-                    "category.id",
-                    "category.title",
-                    "auhtor.id",
-                    "author.first_name",
-                    "author.last_name",
-                    "translations.*",
-                    "category.translations.*",
-                ],
-            }));
+    let postSlug = params.slug;
 
 
-            const postData = post?.[0];
-
-            if (locale === "en") {
-                return postData;
-            } else {
-                const localisedPostData = {
-                    ...postData,
-                    title: postData?.translations?.[0]?.title,
-                    description: postData?.translations?.[0]?.description,
-                    body: postData?.translations?.[0]?.body,
-                    category: {
-                        ...postData?.category,
-                        title: postData?.category?.translations?.[0]?.title,
-                    },
-                };
-
-                return localisedPostData;
-            }
-
-        } catch (error) {
-            console.log(error);
-            throw new Error("Error fetching posts");
-        }
-    }
-
-    const post = await getPostData()
+    const post = await getPostData(postSlug, locale)
 
     if (!post) {
         notFound()
