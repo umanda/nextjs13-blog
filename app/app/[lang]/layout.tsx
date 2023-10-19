@@ -26,6 +26,27 @@ export const generateMetadata = async ({params: { lang },}: {params: { lang: str
       default: siteConfig.siteName,
     },
     description: dicitionary.footer.description,
+    openGraph: {
+      title: siteConfig.siteName,
+      description: dicitionary.footer.description,
+      url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}`,
+      siteName: siteConfig.siteName,
+      images: [
+        {
+          url:`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`,
+          width: 1200,
+          height: 628,
+        },
+        {
+          url:`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`, // small image
+          width: 800,
+          height: 600,
+        },
+      ],
+      authors: ['Umanda Jayobandara'],
+      locale: lang,
+      type: "website",
+    },
   }
 }
 
