@@ -27,12 +27,12 @@ export default async function Home({ params }: { params: { lang: string } }) {
         ],
       }));
 
-      console.log("----post data 1----", posts[0]);
+      ///console.log("----post data 1----", posts[0]);
 
 
-      return posts;
+      //return posts;
 
-      /* if (locale === "en") {
+       if (locale === "en") {
         return posts;
       } else {
         const localisedPosts = posts?.map((post) => { //
@@ -50,7 +50,7 @@ export default async function Home({ params }: { params: { lang: string } }) {
         }); console.log(localisedPosts);
 
         return localisedPosts;
-      } */
+      } 
 
     } catch (error) {
       console.info(error);
