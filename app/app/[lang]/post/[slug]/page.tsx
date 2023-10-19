@@ -7,8 +7,9 @@ import PostBody from '@/components/post/post-body';
 import PostHero from '@/components/post/post-hero';
 import { notFound } from 'next/navigation';
 import React, { cache } from 'react';
+import siteConfig from '@/config/site';
 
-const getPostData = cache(async (postSlug: string, locale: string) => {
+export const getPostData = cache(async (postSlug: string, locale: string) => {
     try {
         const post = await directus.request(readItems("post", {
             filter: {
@@ -54,6 +55,7 @@ const getPostData = cache(async (postSlug: string, locale: string) => {
     }
 })
 
+
 // Generate Metadata Function
 export const generateMetadata = async ({ params: { slug, lang }, }: { params: { slug: string; lang: string; }; }) => {
     // Get Post Data from Directus
@@ -68,22 +70,22 @@ export const generateMetadata = async ({ params: { slug, lang }, }: { params: { 
             url: `${process.env.NEXT_PUBLIC_SITE_URL}/${lang}/${slug}`,
             siteName: post?.title,
             images: [
-              {
-                url:`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`,
-                width: 1200,
-                height: 628,
-              },
-              {
-                url:`${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`, // small image
-                width: 800,
-                height: 600,
-              },
+                {
+                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`,
+                    width: 1200,
+                    height: 628,
+                },
+                {
+                    url: `${process.env.NEXT_PUBLIC_SITE_URL}/opengraph-image.png`, // small image
+                    width: 800,
+                    height: 600,
+                },
             ],
             authors: ['Umanda Jayobandara'],
             locale: lang,
             type: "website",
-          },
-          alternates: {
+        },
+        alternates: {
             canonical: `${process.env.NEXT_PUBLIC_SITE_URL}/post/${slug}}`,
             languages: {
                 'en-US': `${process.env.NEXT_PUBLIC_SITE_URL}/en/post/${slug}`,
@@ -148,12 +150,34 @@ const Page = async ({ params, }: { params: { slug: string; lang: string; }; }) =
 
     const post = await getPostData(postSlug, locale)
 
+    /* Structured Data for Google */
+    const jsonLd = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        headline: post.title,
+        image: `${process.env.NEXT_PUBLIC_SITE_URL}/${locale}/post/${postSlug}/opengraph-image.png`,
+        author: post.author.first_name + " " + post.author.last_name,
+        genre: post.category.title,
+        publisher: siteConfig.siteName,
+        url: `${process.env.NEXT_PUBLIC_SITE_URL}/post/${postSlug}`,
+        datePublished: new Date(post.date_created).toISOString(),
+        dateCreated: new Date(post.date_created).toISOString(),
+        dateModified: new Date(post.date_updated).toISOString(),
+        description: post.description,
+        articleBody: post.body,
+    };
+
     if (!post) {
         notFound()
     }
 
     return (
         <PaddingContainer>
+            {/* Add JSON-LD to your page */}
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
             <div className='space-y-10'>
                 <PostHero locale={locale} post={post} />
                 <div className='flex flex-col md:flex-row gap-10'>
