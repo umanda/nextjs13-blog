@@ -6,13 +6,14 @@ import PostHero from "@/components/post/post-hero";
 import siteConfig from "@/config/site";
 import directus from "@/lib/directus";
 import { getDictionary } from "@/lib/getDictionary";
+import { readItems } from "@directus/sdk";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
 // Get Post Data
 export const getPostData = cache(async (postSlug: string, locale: string) => {
   try {
-    const post = await directus.items("post").readByQuery({
+    const post = await directus.request(readItems('post', {
       filter: {
         slug: {
           _eq: postSlug,
@@ -28,9 +29,9 @@ export const getPostData = cache(async (postSlug: string, locale: string) => {
         "translations.*",
         "category.translations.*",
       ],
-    });
+    }));
 
-    const postData = post?.data?.[0];
+    const postData = post?.[0];
 
     if (locale === "en") {
       return postData;
@@ -102,23 +103,23 @@ export const generateStaticParams = async () => {
     };
   }); */
   try {
-    const posts = await directus.items("post").readByQuery({
+    const posts = await directus.request(readItems('post', {
       filter: {
         status: {
           _eq: "published",
         },
       },
       fields: ["slug"],
-    });
+    }));
 
-    const params = posts?.data?.map((post) => {
+    const params = posts?.map((post) => {
       return {
         slug: post.slug as string,
         lang: "en",
       };
     });
 
-    const localisedParams = posts?.data?.map((post) => {
+    const localisedParams = posts?.map((post) => {
       return {
         slug: post.slug as string,
         lang: "de",

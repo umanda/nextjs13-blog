@@ -2,6 +2,7 @@ import PaddingContainer from "@/components/layout/padding-container";
 import PostList from "@/components/post/post-lists";
 import directus from "@/lib/directus";
 import { Post } from "@/types/collection";
+import { readItems } from "@directus/sdk";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
@@ -9,7 +10,7 @@ import { cache } from "react";
 export const getCategoryData = cache(
   async (categorySlug: string, locale: string) => {
     try {
-      const category = await directus.items("category").readByQuery({
+      const category = await directus.request(readItems('category', {
         filter: {
           slug: {
             _eq: categorySlug,
@@ -26,12 +27,12 @@ export const getCategoryData = cache(
           "posts.category.title",
           "posts.translations.*",
         ],
-      });
+      }));
 
       if (locale === "en") {
-        return category?.data?.[0];
+        return category?.[0];
       } else {
-        const fetchedCategory = category?.data?.[0];
+        const fetchedCategory = category?.[0];
         const localisedCategory = {
           ...fetchedCategory,
           title: fetchedCategory.translations[0].title,
@@ -107,23 +108,23 @@ export const generateStaticParams = async () => {
   }); */
 
   try {
-    const categories = await directus.items("category").readByQuery({
+    const categories = await directus.request(readItems("category", {
       filter: {
-        status: {
-          _eq: "published",
-        },
+          status: {
+              _eq: "published",
+          },
       },
       fields: ["slug"],
-    });
+  }));
 
-    const params = categories?.data?.map((category) => {
+    const params = categories?.map((category) => {
       return {
         category: category.slug as string,
         lang: "en",
       };
     });
 
-    const localisedParams = categories?.data?.map((category) => {
+    const localisedParams = categories?.map((category) => {
       return {
         category: category.slug as string,
         lang: "de",
@@ -132,6 +133,7 @@ export const generateStaticParams = async () => {
 
     const allParams = params?.concat(localisedParams ?? []);
     return allParams || [];
+    
   } catch (error) {
     console.log(error);
     throw new Error("Error fetching categories");
