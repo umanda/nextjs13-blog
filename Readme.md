@@ -1,4 +1,3 @@
-npx directus start
+CMS npx directus start
 
-
-npx directus users passwd --email umanda@ifonix.io --password 123456
+App yarn run dev 

@@ -10,28 +10,28 @@
   },
   "dependencies": {
     "@directus/sdk": "^12.0.1",
-    "@formatjs/intl-localematcher": "^0.4.2",
+    "@formatjs/intl-localematcher": "^0.2.32",
     "@tailwindcss/container-queries": "^0.1.1",
-    "@types/luxon": "^3.3.2",
     "@types/negotiator": "^0.6.1",
-    "html-react-parser": "^4.2.2",
-    "lucide-react": "^0.279.0",
-    "luxon": "^3.4.3",
+    "@types/node": "20.2.3",
+    "@types/react": "18.2.6",
+    "@types/react-dom": "18.2.4",
+    "autoprefixer": "10.4.14",
+    "eslint": "8.41.0",
+    "eslint-config-next": "13.4.3",
+    "html-react-parser": "^3.0.16",
+    "lucide-react": "^0.221.0",
+    "luxon": "^3.3.0",
     "negotiator": "^0.6.3",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "reading-time": "^1.5.0"
+    "next": "13.4.4",
+    "postcss": "8.4.23",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "reading-time": "^1.5.0",
+    "tailwindcss": "3.3.2",
+    "typescript": "5.0.4"
   },
   "devDependencies": {
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "autoprefixer": "latest",
-    "eslint": "latest",
-    "eslint-config-next": "latest",
-    "postcss": "latest",
-    "tailwindcss": "latest",
-    "typescript": "latest"
+    "@types/luxon": "^3.3.0"
   }
 }

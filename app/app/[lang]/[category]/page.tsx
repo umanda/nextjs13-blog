@@ -6,9 +6,19 @@ import { readItems } from "@directus/sdk";
 import { notFound } from "next/navigation";
 import { cache } from "react";
 
+
+
 // Get Category Data
 export const getCategoryData = cache(
   async (categorySlug: string, locale: string) => {
+    /* async ({
+      params: { categorySlug, lang },
+    }: {
+      params: {
+        categorySlug: string;
+        lang: string;
+      };
+    }) => { */
     try {
       const category = await directus.request(readItems('category', {
         filter: {
@@ -28,6 +38,8 @@ export const getCategoryData = cache(
           "posts.translations.*",
         ],
       }));
+
+      //let locale = lang
 
       if (locale === "en") {
         return category?.[0];
