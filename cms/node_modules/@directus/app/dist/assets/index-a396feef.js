@@ -1,0 +1,1 @@
+var t={exports:{}};(function(a,e){Object.defineProperty(e,"__esModule",{value:!0}),e.default=void 0;var r={lastWeek:"eeee 'dernier à' p",yesterday:"'hier à' p",today:"'aujourd’hui à' p",tomorrow:"'demain à' p'",nextWeek:"eeee 'prochain à' p",other:"P"},o=function(d,l,u,v){return r[d]},i=o;e.default=i,a.exports=e.default})(t,t.exports);var n=t.exports;export{n as f};

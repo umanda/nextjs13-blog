@@ -1,0 +1,4 @@
+/**
+ * See https://apastyle.apa.org/style-grammar-guidelines/capitalization/title-case for the rules
+ */
+export declare function handleSpecialWords(str: string, index: number, words: string[]): string;

@@ -1,0 +1,31 @@
+import env from '../../env.js';
+import { ServiceUnavailableError } from '../../errors/index.js';
+import { toBoolean } from '../../utils/to-boolean.js';
+import { GraphQLSubscriptionController } from './graphql.js';
+import { WebSocketController } from './rest.js';
+let websocketController;
+let subscriptionController;
+export function createWebSocketController(server) {
+    if (toBoolean(env['WEBSOCKETS_REST_ENABLED'])) {
+        websocketController = new WebSocketController(server);
+    }
+}
+export function getWebSocketController() {
+    if (!toBoolean(env['WEBSOCKETS_ENABLED']) || !toBoolean(env['WEBSOCKETS_REST_ENABLED'])) {
+        throw new ServiceUnavailableError({ service: 'ws', reason: 'WebSocket server is disabled' });
+    }
+    if (!websocketController) {
+        throw new ServiceUnavailableError({ service: 'ws', reason: 'WebSocket server is not initialized' });
+    }
+    return websocketController;
+}
+export function createSubscriptionController(server) {
+    if (toBoolean(env['WEBSOCKETS_GRAPHQL_ENABLED'])) {
+        subscriptionController = new GraphQLSubscriptionController(server);
+    }
+}
+export function getSubscriptionController() {
+    return subscriptionController;
+}
+export * from './graphql.js';
+export * from './rest.js';
