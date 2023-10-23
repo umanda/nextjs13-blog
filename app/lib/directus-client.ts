@@ -1,4 +1,5 @@
-import { Directus } from "@directus/sdk";
-const directusClient = new Directus(process.env.NEXT_PUBLIC_API_URL as string);
+import { createDirectus, rest} from "@directus/sdk";
 
+const directusClient = createDirectus(process.env.NEXT_PUBLIC_API_URL as string)
+  .with(rest());
 export default directusClient;

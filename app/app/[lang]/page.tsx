@@ -5,6 +5,7 @@ import PostList from "@/components/post/post-lists";
 import directus from "@/lib/directus";
 import { getDictionary } from "@/lib/getDictionary";
 import { notFound } from "next/navigation";
+import { readItems } from '@directus/sdk';
 
 export default async function Home({
   params,
@@ -17,7 +18,7 @@ export default async function Home({
 
   const getAllPosts = async () => {
     try {
-      const posts = await directus.items("post").readByQuery({
+      const posts = await directus.request(readItems('post', {
         fields: [
           "*",
           "author.id",
@@ -28,12 +29,12 @@ export default async function Home({
           "category.translations.*",
           "translations.*",
         ],
-      });
+      }));
 
       if (locale === "en") {
-        return posts.data;
+        return posts;
       } else {
-        const localisedPosts = posts.data?.map((post) => {
+        const localisedPosts = posts?.map((post) => {
           return {
             ...post,
             title: post.translations[0].title,
